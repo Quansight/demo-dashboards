@@ -1,0 +1,24 @@
+name: us_natural_gas
+
+channels:
+  - pyviz/label/dev
+  - conda-forge
+
+dependencies:
+  - python
+  - pip
+  - jupyterlab
+  - pandas
+  - conda-forge::geopandas
+  - conda-forge::conda-lock
+
+
+  - pyviz/label/dev::holoviews
+  - pyviz/label/dev::geoviews
+  - pyviz/label/dev::geoviews-core
+  - pyviz/label/dev::param
+  - pyviz/label/dev::panel
+
+  - pip:
+    - -r requirements.txt
+    
