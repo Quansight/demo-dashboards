@@ -1,0 +1,8 @@
+pandas
+cartopy==0.17.0
+panel
+holoviews
+datashader
+geoviews
+pykdtree
+scipy
