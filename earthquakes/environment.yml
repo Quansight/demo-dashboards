@@ -1,7 +1,6 @@
 name: earthquakes
 
 channels:
-  - pyviz/label/dev
   - conda-forge
 
 dependencies:
@@ -9,23 +8,10 @@ dependencies:
   - pip
   - jupyterlab
   - pandas
-  # - conda-forge::geopandas
-
-  - pyviz/label/dev::holoviews
-  - pyviz/label/dev::geoviews
-  - pyviz/label/dev::geoviews-core
-  - pyviz/label/dev::param
-  - pyviz/label/dev::panel
-
-  - pyviz/label/dev::datashader
-  # - pip:
-  #   - -r requirements.txt
+  - holoviews
+  - geoviews
+  - geoviews-core
+  - param
+  - panel
+  - datashader
     
-
-# conda install -c pyviz geoviews                    
-#jupyter labextension install @pyviz/jupyterlab_pyviz     
-#pip install --upgrade --force-reinstall shapely      
-conda install -c conda-forge intake
-conda install -c conda-forge intake-parquet
-
-conda install -c pyviz hvplot
