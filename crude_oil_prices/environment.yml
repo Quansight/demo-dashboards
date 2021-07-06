@@ -1,0 +1,16 @@
+name: crude_oil_prices
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python
+  - jupyterlab
+  - pandas
+  - holoviews
+  - param
+  - panel
+  - pip
+  - pip:
+    - yfinance
+    
