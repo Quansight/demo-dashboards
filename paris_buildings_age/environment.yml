@@ -1,0 +1,10 @@
+name: earthquakes
+
+dependencies:
+  - python
+  - pip
+  - jupyterlab
+  - pandas
+  - pip:
+    - geopandas
+    
