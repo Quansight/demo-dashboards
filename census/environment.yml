@@ -1,0 +1,19 @@
+name: census
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python
+  - pip
+  - jupyterlab
+  - pandas
+  - holoviews
+  - geoviews
+  - geoviews-core
+  - param
+  - panel
+  - colorcet
+  - datashader
+  - fastparquet
+  - python-snappy
