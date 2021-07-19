@@ -1,0 +1,18 @@
+name: global_warming
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python
+  - pip
+  - jupyterlab
+  - pandas
+  - holoviews
+  - hvplot
+  - geoviews
+  - geoviews-core
+  - param
+  - panel
+  - datashader
+    
