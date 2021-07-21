@@ -1,10 +1,17 @@
-name: earthquakes
+name: paris_buildings_age 
+
+channels:
+  - conda-forge
 
 dependencies:
   - python
   - pip
   - jupyterlab
   - pandas
-  - pip:
-    - geopandas
+  - holoviews
+  - geoviews
+  - geoviews-core
+  - param
+  - panel
+  - datashader
     
