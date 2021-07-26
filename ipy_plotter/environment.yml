@@ -1,0 +1,14 @@
+name: plotter
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - python
+    - jupyter
+    - numba
+    - numpy
+    - pytest
+    - panel
+    - ipyvolume
+    - pandas
+    - jupyterlab
