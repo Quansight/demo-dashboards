@@ -1,0 +1,19 @@
+name: astronauts
+
+channels:
+  - conda-forge
+  - plotly
+
+dependencies:
+  - python
+  - jupyterlab>=3
+  - ipywidgets>=7.6
+  - pandas
+  - holoviews
+  - param
+  - panel
+  - plotly=5.1.0
+  - pip
+  - pip:
+    - yfinance
+    
