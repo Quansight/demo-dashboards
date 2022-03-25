@@ -1,0 +1,56 @@
+<!--
+  Version: 0.0.3-alpha
+  SVGAnimFrames, copyright (c) by Michael Schwartz
+  Distributed under an MIT license: https://github.com/michaelsboost/SVGAnimFrames/blob/gh-pages/LICENSE
+  
+  This is SVGAnimFrames (https://michaelsboost.github.io/SVGAnimFrames/), SVG Frame By Frame Animation
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SVGAnimFrames: SVG Frame By Frame Animation</title>
+  </head>
+  <body>
+    
+
+    <div id="animate">
+
+        <svg id="main_svg" style="isolation:isolate" viewBox="0 0 800 800">
+            <defs>
+                <clipPath id="_clipPath_container">
+                    <rect width="800" height="800"/>
+                </clipPath>
+            </defs>
+            
+
+        </svg>
+    </div>
+
+           
+    <script src="../SVGAnimFrames.js"></script>
+    <script src="../animations.js"></script>
+    <script>
+
+        var nbr_images = 49;
+        var color = "green";
+        var country = "Greenland";
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            build_svg_frames(nbr_images, "uniform_growing_lengths", color, country)
+
+            console.log("DOMContentLoaded");
+            setTimeout(function(){
+                document.getElementById("to_hide").parentElement.removeChild(document.getElementById("to_hide"));
+                setTimeout(function(){
+                    SVGAnimFrames("#animate svg", "> g", "no-repeat", "40", "1000");
+                }, 10);
+            }, 10);
+            
+        }, false);
+
+    </script>
+    
+  </body>
+</html>
