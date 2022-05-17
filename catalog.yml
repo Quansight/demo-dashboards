@@ -1,16 +1,16 @@
 sources:
-  states:
-    description: 'US state information from [CivilServices](https://civil.services/)'
-    driver: csv
-    args:
-      urlpath: '{{ CATALOG_DIR }}/data/states_*.csv'
-    metadata:
-      origin_url: 'https://github.com/CivilServiceUSA/us-states/blob/v1.0.0/data/states.csv'
-  iris:
-    description: 'Well known iris dataset'
-    driver: csv
-    args:
-      urlpath: '{{ CATALOG_DIR }}/data/iris.csv'
+  # states:
+  #   description: 'US state information from [CivilServices](https://civil.services/)'
+  #   driver: csv
+  #   args:
+  #     urlpath: '{{ CATALOG_DIR }}/data/states_*.csv'
+  #   metadata:
+  #     origin_url: 'https://github.com/CivilServiceUSA/us-states/blob/v1.0.0/data/states.csv'
+  # iris:
+  #   description: 'Well known iris dataset'
+  #   driver: csv
+  #   args:
+  #     urlpath: '{{ CATALOG_DIR }}/data/iris.csv'
   austin_trees:
     description: 'Public tree locations inventoried by the City of Austin as of March 13th, 2020.'
     driver: csv
@@ -34,21 +34,25 @@ sources:
     description: 'Public monthly mean data of CO2 from Mauna Loa.'
     driver: csv
     args:
-      urlpath: 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv'
+      urlpath: 'gcs://qhub_catalog/mauna_loa_co2.csv'
+      storage_options:
+        token: 'cloud'
     metadata:
       origin_url: 'https://gml.noaa.gov/ccgg/trends/data.html'
-  coco_image_dataset_2017:
-    description: 'Public dataset for image captioning, object detection, and keypoints.'
-    driver: zip
-    args:
-      urlpath: 'http://images.cocodataset.org/zips/*2017.zip'
-    metadata:
-      origin_url: 'https://cocodataset.org/#download'
+  # coco_image_dataset_2017:
+  #   description: 'Public dataset for image captioning, object detection, and keypoints.'
+  #   driver: zip
+  #   args:
+  #     urlpath: 'http://images.cocodataset.org/zips/*2017.zip'
+  #   metadata:
+  #     origin_url: 'https://cocodataset.org/#download'
   flu_pneumonia_covid:
     description: 'Provisional Death Counts for Influenza, Pneumonia, and COVID-19'
     driver: json
     args:
-      urlpath: 'https://data.cdc.gov/resource/ynw2-4viq.json'
+      urlpath: 'gcs://qhub_catalog/flu_pneumonia_covid.json'
       compression: 'infer'
+      storage_options:
+        token: 'cloud'
     metadata:
         origin_url: 'https://data.cdc.gov/NCHS/Provisional-Death-Counts-for-Influenza-Pneumonia-a/ynw2-4viq'
