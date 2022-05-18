@@ -30,11 +30,29 @@ sources:
       - argkey: urlpath
         regex: assets.holoviews.org
         type: file
+    metadata:
+      plots:
+        scatter_example:
+          kind: scatter
+          x: distance
+          y: airtime
+          rasterize: True
+          cmap: fire_r
+        heatmap_example:
+          kind: heatmap
+          x: day
+          y: carrier
+          C: depdelay
+          reduce_function: mean
+          colorbar: True    
   mauna_loa_co2:
     description: 'Public monthly mean data of CO2 from Mauna Loa.'
     driver: csv
     args:
       urlpath: 'gcs://qhub_catalog/mauna_loa_co2.csv'
+      csv_kwargs: {
+          'skiprows': 51
+          }
       storage_options:
         token: 'cloud'
     metadata:
