@@ -7,7 +7,8 @@ from intake.catalog import Catalog
 
 project = "qhub-279316"
 bucket = "qhub_catalog"
-json_path = "/home/jovyan/shared/quansight/quansight-qhub-object-storage.json"
+
+# TODO: modify once packaging in place
 catalog_path = "/home/sbanik@quansight.com/demo-dashboards/catalog.yml"
 
 """
