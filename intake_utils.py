@@ -4,12 +4,11 @@ import pandas as pd
 from google.cloud import storage
 from intake.catalog import Catalog
 
-from mlops_framework import CATALOG_DIR
 
 project = "qhub-279316"
-bucket = "quansight-qhub-data"
+bucket = "qhub_catalog"
 json_path = "/home/jovyan/shared/quansight/quansight-qhub-object-storage.json"
-catalog_path = CATALOG_DIR.joinpath("catalog.yml")
+catalog_path = "/home/sbanik@quansight.com/demo-dashboards/catalog.yml"
 
 """
 NOTES:
@@ -27,7 +26,7 @@ def catalog_init():
     Returns:
         Intake catalog object
     """
-    fs = gcsfs.GCSFileSystem(token=json_path)
+    fs = gcsfs.GCSFileSystem(project='qhub-279316')
     catalog = intake.open_catalog(catalog_path)
     return catalog
 
