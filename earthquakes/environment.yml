@@ -1,0 +1,17 @@
+name: earthquakes
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python
+  - pip
+  - jupyterlab
+  - pandas
+  - holoviews
+  - geoviews
+  - geoviews-core
+  - param
+  - panel
+  - datashader
+    
