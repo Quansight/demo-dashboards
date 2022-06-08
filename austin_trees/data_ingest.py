@@ -117,13 +117,3 @@ class austin_trees:
                             shape='circle').opts(
                                 xaxis=None, yaxis=None, width=plot_width, height=plot_height) * (hover_data) * legend
     
-
-
-
-    
-obj = austin_trees()
-dataset = obj.pre_processing()
-# # obj.post_processing(dataset)
-# obj.select_top_n_specie(dataset, 4)
-data = obj.geo_plot_ready_data(dataset)
-obj.geo_plot(data)
