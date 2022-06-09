@@ -33,7 +33,7 @@ austin_coordinates = ((-97.91,  -97.52), (30.17, 30.37))
 plot_width  = int(950)
 plot_height = int(plot_width//1.2)
 tile_selection = StamenTerrainRetina() 
-color_scheme = cc.glasbey_bw_minc_20_maxl_70 
+color_scheme = cc.glasbey_hv
 magnification_intensity = 5
 threshold_value = 1
 
@@ -95,9 +95,10 @@ class austin_trees:
 
     
     def geo_plot(self, raw_df_trees_geo):
-        cats = list(raw_df_trees_geo.SPECIES.unique())
+        cats = list(raw_df_trees_geo.SPECIES.unique().sort_values())
         colors    = color_scheme
         color_key = {cat: tuple(int(e*255.) for e in colors[i]) for i, cat in enumerate(cats)}
+
         legend    = hv.NdOverlay({k: hv.Points([0,0], label=str(k)).opts(
                                                 color=cc.rgb_to_hex(*v), size=0, apply_ranges=False) 
                                 for k, v in color_key.items()}, 'SPECIES')
@@ -165,19 +166,27 @@ class austin_trees:
     def diversity_trees_plot(self, dataset):
         raw_df_trees_subset, processed_df_trees_subset= self.select_top_n_specie(dataset, 10)
         raw_df_trees_subset['rounded_diameter'] = raw_df_trees_subset['DIAMETER'].round()
+        cats = list(processed_df_trees_subset.sort_values(by='SPECIES').SPECIES)
+        colors    = color_scheme
+        color_key = {cat: tuple(int(e*255.) for e in colors[i]) for i, cat in enumerate(cats)}
 
         raw_df_trees_subset = raw_df_trees_subset.drop(['GEOMETRY', 'LATITUDE', 'LONGTITUDE', 'New Georeferenced Column'], axis=1)
         plotable_df_subset = raw_df_trees_subset.loc[raw_df_trees_subset['rounded_diameter']<=40].groupby(
             ['SPECIES']).value_counts(
             'rounded_diameter').reset_index().rename(
             columns={0: 'count_diameter'})
-        plot = hv.Bars(plotable_df_subset, kdims=['rounded_diameter', 'SPECIES'], vdims=['count_diameter']).aggregate(function=np.sum).sort()
+        plot = hv.Bars(plotable_df_subset, 
+                       kdims=['rounded_diameter', 'SPECIES'], 
+                       vdims=['count_diameter']).aggregate(function=np.sum).sort()
+        
         hover = HoverTool(tooltips=[('Specie name','@SPECIES'), 
                             ('Diamter value','@rounded_diameter'), 
                             ('Total number of trees', '@count_diameter')])
         fig = plot.opts(width=1200, 
                   height=525,
                   stacked=True,
-                  tools=[hover]).relabel("Diversity of diameter values among top 10 species")
+                  tools=[hover]).opts(
+                  cmap=color_key).relabel("Diversity of diameter values among top 10 species")
+        
         return fig
         
