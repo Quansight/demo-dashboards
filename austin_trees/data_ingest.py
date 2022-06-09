@@ -110,10 +110,11 @@ class austin_trees:
                                         aggregator=ds.count_cat('SPECIES'))
         ropts = dict(tools=['hover'])
         hover_data = shaded.opts(**ropts)
-
-        tiles * hd.dynspread(shaded, 
+        print("Ready to plot")
+        plot_geo = tiles * hd.dynspread(shaded, 
                             threshold=threshold_value, 
                             max_px=magnification_intensity, 
                             shape='circle').opts(
-                                xaxis=None, yaxis=None, width=plot_width, height=plot_height) * (hover_data) * legend
+                                xaxis=None, yaxis=None, width=1000, height=600) * (hover_data) * legend
+        return plot_geo
     
