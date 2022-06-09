@@ -8,6 +8,7 @@ from intake_utils import (
 
 import numpy as np
 import pandas as pd
+import panel as pn
 
 import geoviews as gv
 import matplotlib.pyplot as plt
@@ -27,6 +28,7 @@ hv.extension('bokeh', logo=False)
 """
 Static variables for plotting
 """
+count_widget = pn.widgets.IntSlider(name = 'Specie count', value = 7, start = 1, end = 15)
 austin_coordinates = ((-97.91,  -97.52), (30.17, 30.37))
 plot_width  = int(950)
 plot_height = int(plot_width//1.2)
@@ -116,5 +118,66 @@ class austin_trees:
                             max_px=magnification_intensity, 
                             shape='circle').opts(
                                 xaxis=None, yaxis=None, width=1000, height=600) * (hover_data) * legend
-        return plot_geo
+        title = "### 👩🏽‍💻 A demonstrating using datashader, holoviews and bokeh as backend. \
+                 **NOTE:** The map takes some time to load completely "
+        return pn.Column(title, plot_geo)
     
+    def violin_plot(self, dataset):
+        key_dimensions   = [('DIAMETER', 'Diameter (inches)')]
+        value_dimensions = [('SPECIES', 'Specie name')]
+        count_widget = pn.widgets.IntSlider(name = 'Specie count', value = 7, start = 1, end = 15)
+        hover = HoverTool(tooltips=[('DIAMETER','$y')])
+
+        @pn.depends(count_widget.param.value)
+        def plotting_specie(count_widget):
+            df_top_10_raw,df_top_10_processed = self.select_top_n_specie(dataset, count_widget)
+            fig = hv.Violin(df_top_10_raw, value_dimensions, key_dimensions).opts(xrotation=45, width=800, height=400, 
+                                                                                  violin_fill_color=dim('SPECIES').str(), 
+                                                                                  cmap='Set1', tools=[hover])
+            return fig
+
+        widgets = pn.WidgetBox(count_widget)
+        title = "### 🌱  Violin plot, specie overview based on diameter distribution"
+        return pn.Row(title, pn.Column(widgets, 
+                                plotting_specie, 
+                                sizing_mode='stretch_width'))
+    
+    def distribution_plot(self, dataset):
+        value_dimensions   = [('mean_diameter', 'Mean diameter (measure unit=inches)'), ('specie_count', 'Specie Count')]
+        key_dimensions = [('SPECIES', 'SPECIES')]
+        df_top_10_raw,df_top_10_processed = self.select_top_n_specie(dataset, 10)
+        macro = hv.Table(df_top_10_processed, key_dimensions, value_dimensions)
+
+        plot_each_specie = macro.to.table('specie_count', 'Mean diameter (measure unit=inches)').opts(height=50, width=400)
+        hover = HoverTool(tooltips=[('DIAMETER','$x')])
+        fig = plot_each_specie + hv.Distribution(
+            data=df_top_10_raw,
+            kdims=['DIAMETER'],
+            vdims=['SPECIES'],
+        ).groupby(
+            'SPECIES'
+        ).opts(tools=[hover])
+        
+        title = "### 📖 Distribution plot based mean diameter and abundance - Top 10 specie"
+        return pn.Row(title, pn.Row(fig, 
+                                sizing_mode='stretch_width'))
+        
+    def diversity_trees_plot(self, dataset):
+        raw_df_trees_subset, processed_df_trees_subset= self.select_top_n_specie(dataset, 10)
+        raw_df_trees_subset['rounded_diameter'] = raw_df_trees_subset['DIAMETER'].round()
+
+        raw_df_trees_subset = raw_df_trees_subset.drop(['GEOMETRY', 'LATITUDE', 'LONGTITUDE', 'New Georeferenced Column'], axis=1)
+        plotable_df_subset = raw_df_trees_subset.loc[raw_df_trees_subset['rounded_diameter']<=40].groupby(
+            ['SPECIES']).value_counts(
+            'rounded_diameter').reset_index().rename(
+            columns={0: 'count_diameter'})
+        plot = hv.Bars(plotable_df_subset, kdims=['rounded_diameter', 'SPECIES'], vdims=['count_diameter']).aggregate(function=np.sum).sort()
+        hover = HoverTool(tooltips=[('Specie name','@SPECIES'), 
+                            ('Diamter value','@rounded_diameter'), 
+                            ('Total number of trees', '@count_diameter')])
+        fig = plot.opts(width=1200, 
+                  height=525,
+                  stacked=True,
+                  tools=[hover]).relabel("Diversity of diameter values among top 10 species")
+        return fig
+        
