@@ -93,8 +93,8 @@ class austin_trees:
         print("Sneak peek into plot ready data \n", '*'*30, '\n', raw_df_trees_geo.head(1))
         return raw_df_trees_geo
 
+    
     def geo_plot(self, raw_df_trees_geo):
-        """ logic for plotting locations of top 10 specie within austin"""
         cats = list(raw_df_trees_geo.SPECIES.unique().sort_values())
         colors    = color_scheme
         color_key = {cat: tuple(int(e*255.) for e in colors[i]) for i, cat in enumerate(cats)}
@@ -119,15 +119,14 @@ class austin_trees:
                             max_px=magnification_intensity, 
                             shape='circle').opts(
                                 xaxis=None, yaxis=None, width=1000, height=600) * (hover_data) * legend
-        title = "### 👩🏽‍💻 A demonstrating using datashader, holoviews and bokeh as backend. \
-                 **NOTE:** The map takes some time to load completely "
-        return pn.Column(title, plot_geo)
+        title = "## 👩🏽‍💻 A demonstrating using datashader, holoviews and bokeh as backend. \
+                 *NOTE:* The map takes some time to load completely "
+        return pn.Column(title, plot_geo, margin=(15, 400))
     
     def violin_plot(self, dataset):
-        """logic for dynamic violin plot creation for austin tree specie"""
         key_dimensions   = [('DIAMETER', 'Diameter (inches)')]
         value_dimensions = [('SPECIES', 'Specie name')]
-        count_widget = pn.widgets.IntSlider(name = 'Specie count', value = 7, start = 1, end = 15)
+        count_widget = pn.widgets.IntSlider(name = 'Specie count', value = 9, start = 1, end = 15)
         hover = HoverTool(tooltips=[('DIAMETER','$y')])
 
         @pn.depends(count_widget.param.value)
@@ -139,13 +138,11 @@ class austin_trees:
             return fig
 
         widgets = pn.WidgetBox(count_widget)
-        title = "### 🌱  Violin plot, specie overview based on diameter distribution"
-        return pn.Row(title, pn.Column(widgets, 
-                                plotting_specie, 
-                                sizing_mode='stretch_width'))
+        title = "## 🌱  Violin plot, specie overview based on diameter distribution"
+        return pn.Column(title, pn.Column(widgets, 
+                                plotting_specie))
     
     def distribution_plot(self, dataset):
-        """logic for determining diameter distribution and more info for top species"""
         value_dimensions   = [('mean_diameter', 'Mean diameter (measure unit=inches)'), ('specie_count', 'Specie Count')]
         key_dimensions = [('SPECIES', 'SPECIES')]
         df_top_10_raw,df_top_10_processed = self.select_top_n_specie(dataset, 10)
@@ -161,12 +158,11 @@ class austin_trees:
             'SPECIES'
         ).opts(tools=[hover])
         
-        title = "### 📖 Distribution plot based mean diameter and abundance - Top 10 specie"
-        return pn.Row(title, pn.Row(fig, 
+        title = "## 📖 Distribution plot based mean diameter and abundance - Top 10 specie"
+        return pn.Column(title, pn.Column(fig, 
                                 sizing_mode='stretch_width'))
         
     def diversity_trees_plot(self, dataset):
-        """ logic for stacked bar chart """
         raw_df_trees_subset, processed_df_trees_subset= self.select_top_n_specie(dataset, 10)
         raw_df_trees_subset['rounded_diameter'] = raw_df_trees_subset['DIAMETER'].round()
         cats = list(processed_df_trees_subset.sort_values(by='SPECIES').SPECIES)
@@ -189,7 +185,7 @@ class austin_trees:
                   height=525,
                   stacked=True,
                   tools=[hover]).opts(
-                  cmap=color_key).relabel("Diversity of diameter values among top 10 species")
-        
-        return fig
+                  cmap=color_key)
+        title = "## 🌴 Diversity among top 10 species"
+        return pn.Column(title, fig, margin=(15, 280))
         

@@ -11,14 +11,14 @@ def plot():
     component_violin = object.violin_plot(dataset_raw)
     component_dist = object.distribution_plot(dataset_raw)
     component_specie_diversity = object.diversity_trees_plot(dataset_raw)
-    plot_component = pn.Row(pn.Column(component_map, component_violin, 
-                                      component_dist, component_specie_diversity))
-    view = pn.template.FastListTemplate(
-           site="Austin trees 🌴🌱", 
+    plot_component = pn.Column(component_map, component_specie_diversity, 
+                                pn.Row(component_dist, component_violin))
+    view = pn.template.FastListTemplate(    
+           site="Austin trees 🌳", 
            title="Specie info and more", 
            main=[plot_component]
            )
-    return view 
+    return view
 
 
 if __name__ == "__main__":
