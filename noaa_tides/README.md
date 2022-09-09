@@ -10,7 +10,7 @@ pages here in the notebook. Then, once we are happy with the results, we can mov
 to building a multi-page app by stringing together the individual dashboard pages.  
 We by add the suffix of `.servable()` to the final Panel object we want as our  
 final dashboard. Finally, this notebook can then be deployed via command line:  
-`panel serve water_dashboard_v6.ipynb`. Alternately, it can be served via CDSDashboards  
+`panel serve water_dashboard.ipynb`. Alternately, it can be served via CDSDashboards  
 on a JupyterHub or Nebari server.  
   
 
