@@ -1,0 +1,76 @@
+sources:
+  # states:
+  #   description: 'US state information from [CivilServices](https://civil.services/)'
+  #   driver: csv
+  #   args:
+  #     urlpath: '{{ CATALOG_DIR }}/data/states_*.csv'
+  #   metadata:
+  #     origin_url: 'https://github.com/CivilServiceUSA/us-states/blob/v1.0.0/data/states.csv'
+  # iris:
+  #   description: 'Well known iris dataset'
+  #   driver: csv
+  #   args:
+  #     urlpath: '{{ CATALOG_DIR }}/data/iris.csv'
+  austin_trees:
+    description: 'Public tree locations inventoried by the City of Austin as of March 13th, 2020.'
+    driver: csv
+    args:
+      urlpath: 'gcs://qhub_catalog/tree-inventory-austin-tx-2020.csv'
+      storage_options:
+        token: 'cloud'
+      csv_kwargs:
+        assume_missing: true
+  airline_flights:
+    description: Airline Flight data
+    driver: parquet
+    args:
+      urlpath: 's3://assets.holoviews.org/data/airline_flights.parq'
+      storage_options: {'anon': True}
+    cache:
+      - argkey: urlpath
+        regex: assets.holoviews.org
+        type: file
+    metadata:
+      plots:
+        scatter_example:
+          kind: scatter
+          x: distance
+          y: airtime
+          rasterize: True
+          cmap: fire_r
+        heatmap_example:
+          kind: heatmap
+          x: day
+          y: carrier
+          C: depdelay
+          reduce_function: mean
+          colorbar: True    
+  mauna_loa_co2:
+    description: 'Public monthly mean data of CO2 from Mauna Loa.'
+    driver: csv
+    args:
+      urlpath: 'gcs://qhub_catalog/mauna_loa_co2.csv'
+      csv_kwargs: {
+          'skiprows': 51
+          }
+      storage_options:
+        token: 'cloud'
+    metadata:
+      origin_url: 'https://gml.noaa.gov/ccgg/trends/data.html'
+  # coco_image_dataset_2017:
+  #   description: 'Public dataset for image captioning, object detection, and keypoints.'
+  #   driver: zip
+  #   args:
+  #     urlpath: 'http://images.cocodataset.org/zips/*2017.zip'
+  #   metadata:
+  #     origin_url: 'https://cocodataset.org/#download'
+  flu_pneumonia_covid:
+    description: 'Provisional Death Counts for Influenza, Pneumonia, and COVID-19'
+    driver: json
+    args:
+      urlpath: 'gcs://qhub_catalog/flu_pneumonia_covid.json'
+      compression: 'infer'
+      storage_options:
+        token: 'cloud'
+    metadata:
+        origin_url: 'https://data.cdc.gov/NCHS/Provisional-Death-Counts-for-Influenza-Pneumonia-a/ynw2-4viq'
